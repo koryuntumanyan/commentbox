@@ -81,7 +81,7 @@ function formatDate(date) {
     }
 }
 
-function reverse(e) {
+function sorter(e) {
     if (e.text.includes('старых'))
         e.text = 'От новых к старым';
     else
