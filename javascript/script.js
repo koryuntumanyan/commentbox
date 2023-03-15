@@ -12,6 +12,10 @@ comment.addEventListener('keydown', function (e) {
 commentForm.onsubmit = ((e) => {
     e.preventDefault();
     let name = document.getElementById('name').value;
+    if ( !checkname(name.trim()) ) {
+        alert('Это имя уже занято!')
+        return;
+    }
     let dateInput = document.getElementById('date');
     let date = dateInput.value ? new Date(dateInput.value) : new Date();
     let dateString = formatDate(date);
@@ -21,6 +25,15 @@ commentForm.onsubmit = ((e) => {
     commentSection.prepend(commentHTML);
     commentForm.reset();
 });
+
+function checkname(nm) {
+    let names_div = commentSection.children;
+    for (let i of names_div) {
+        if (i.firstElementChild.innerHTML == `Имя: ${nm}`)
+            return false;
+    }
+    return true;
+}
 
 function createElem(name, comment, date) {
     return `
