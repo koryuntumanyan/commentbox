@@ -88,15 +88,86 @@ function reverse(e) {
         e.text = 'От старых к новым';
     let links = document.getElementById('commentSection').children;
     let links1 = [];
-    for (let i = links.length - 1; i > -1; i--) {
-        let x = document.createElement('div');
-        x = links[i]
-        links1.push(x);
+    let links3 = [];
+    let dt = new Date();
+    for (let i of links) {
+        if ( i.children[2].innerText.includes("Сегодня") ) {
+            dt = new Date();
+            let links2 = {};
+            links2['add_day'] = dt;
+            links2['elem'] = i;
+            links3.push(links2);
+        }
+        else if ( i.children[2].innerText.includes('Вчера') ) {
+            dt.setDate(dt.getDate() - 1);
+            let links2 = {};
+            links2['add_day'] = dt;
+            links2['elem'] = i;
+            links3.push(links2);
+        }
+        else {
+            let dat = i.children[2].innerText.substr(5);
+            let dt = fromStrToDate(dat);
+            let links2 = {};
+            links2['add_day'] = dt;
+            links2['elem'] = i;
+            links3.push(links2);
+        }
     }
+    links3.sort((a, b) => a["add_day"] - b["add_day"]);
+    links3.reverse();
     let i = 0;
     while(links.length > 0) {
         links[i].remove();
     }
-    for(i = 0; i < links1.length; i++)
-        commentSection.append(links1[i]);
+    if ( e.text == 'От новых к старым' )
+        links3.reverse();
+    for(i = 0; i < links3.length; i++)
+        commentSection.append(links3[i]["elem"]);
+}
+
+function fromStrToDate(date) {
+    let dt = date.split(" ");
+    let day = dt[1];
+    let year = dt[3];
+    let month;
+    switch (dt[2]) {
+        case "января":
+            month = 0;
+            break;
+        case "февраля":
+            month = 1;
+            break;
+        case "марта":
+            month = 2;
+            break;
+        case "апреля":
+            month = 3;
+            break;
+        case "мая":
+            month = 4;
+            break;
+        case "июня":
+            month = 5;
+            break;
+        case "июля":
+            month = 6;
+            break;
+        case "августа":
+            month = 7;
+            break;
+        case "сентября":
+            month = 8;
+            break;
+        case "октября":
+            month = 9;
+            break;
+        case "ноября":
+            month = 10;
+            break;
+        case "декабря":
+            month = 11;
+            break;
+    }
+    return new Date(year, month, day);
 }
